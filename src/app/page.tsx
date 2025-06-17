@@ -1,153 +1,200 @@
 "use client";
 
 import Image from "next/image";
+import React, { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
+import clsx from "clsx";
+
+const SidebarIcon = ({
+  icon,
+  label,
+  active,
+  onClick,
+}: {
+  icon: string;
+  label: string;
+  active?: boolean;
+  onClick?: () => void;
+}) => (
+  <button
+    onClick={() => {
+      onClick?.();
+      toast(`${label} not implemented yet`);
+    }}
+    className={clsx(
+      "flex flex-col items-center transition-colors text-xs cursor-pointer",
+      active ? "text-black" : "text-neutral-500 hover:text-black",
+    )}
+  >
+    <Image src={icon} alt={label} width={20} height={20} />
+    <span className="text-[10px] mt-1">{label}</span>
+  </button>
+);
 
 const threads = [
   {
-    name: "hosean",
-    username: "hosean",
-    avatar: "https://i.pravatar.cc/100?u=hosean",
+    user: {
+      name: "josuaiwanwahyudi",
+      avatar: "https://i.pravatar.cc/40?img=1",
+      time: "10h",
+    },
+    content: `Confident atau confidence itu, dari bahasa latin con + fidere\n\nCon artinya "bersama" atau "dengan"\nFidere artinya "mempercayai", dimana fidere juga adalah akar utk kata "fidelity" yang artinya "kesetiaan"\n\nFidere mengandung nuansa setia dan percaya: faith(ful)\n\nSehingga arti keseluruhannya confidere adalah "dengan percaya"\n\nPertanyaannya: percaya sama siapa? Bukan sama diri sendiri, tapi kepada Tuhan (faithful)\n\nMaka, confident itu bukan soal percaya diri. Tapi soal percaya Tuhan yang setia 💪`,
+    likes: 30,
+    replies: 1,
+    shares: 1,
+  },
+  {
+    user: {
+      name: "js_khairen",
+      avatar: "https://i.pravatar.cc/40?img=2",
+      time: "10h",
+    },
     content:
-      "おはよう御座います♪\n今日は33℃まで上がる☀️予報ですね。\n腰痛いが頑張ります！\n本日も宜しくお願いします！\n#紫陽花",
+      "Dunia sudah mau kiamat. Hubungan kalian dari 10 tahun lalu, masih sebatas foto bareng yang kau andai-andaikan kala malam. Hidup gini amat bro?",
+    likes: 21,
+    replies: 1,
+    shares: 1,
+  },
+  {
+    user: {
+      name: "tribunkaltim",
+      avatar: "https://i.pravatar.cc/40?img=3",
+      time: "7h",
+    },
+    content:
+      "Akhirnya Presiden Prabowo Subianto memutuskan 4 pulau yang sempat menjadi sengketa tetap milik Aceh.",
+    link: "https://kaltim.tribunnews.com/2025/keputusan-prabowo",
     image:
-      "https://images.unsplash.com/photo-1718880186680-d8fd7572f23e?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0",
-    time: "17h",
-    likes: 61,
-    comments: 10,
-  },
-  {
-    name: "Bob The Builder",
-    username: "bobthebuilder",
-    avatar: "https://i.pravatar.cc/100?u=bob",
-    content:
-      "Can we fix it? Yes, we can! Started a new Next.js project today. #coding #nextjs",
-    time: "30m",
-    likes: 28,
-    comments: 4,
-  },
-  {
-    name: "Alice Wonderland",
-    username: "alicew",
-    avatar: "https://i.pravatar.cc/100?u=alice",
-    content: "Just had a lovely tea party! 🍵 #wonderland #teatime",
-    time: "2h",
-    likes: 15,
-    comments: 2,
-  },
-  {
-    name: "Charlie Chaplin",
-    username: "charliec",
-    avatar: "https://i.pravatar.cc/100?u=charlie",
-    content: "A day without laughter is a day wasted. 😁",
-    time: "3d",
-    likes: 102,
-    comments: 10,
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Prabowo_Subianto_2023.jpg/640px-Prabowo_Subianto_2023.jpg",
+    likes: 0,
+    replies: 0,
+    shares: 0,
   },
 ];
 
-export default function Home() {
-  return (
-    <main className="bg-black text-white min-h-screen flex justify-center px-4">
-      <Toaster />
-      <div className="w-full max-w-xl py-8">
-        {/* Header */}
-        <h1 className="text-3xl font-bold text-center mb-6">Mini Threads</h1>
+export default function ThreadsClone() {
+  const [activeTab, setActiveTab] = useState("Home");
 
-        {/* New Thread Input */}
-        <div className="flex items-start gap-3 mb-6">
-          <Image
-            src="https://i.pravatar.cc/100?u=current"
-            alt="avatar"
-            width={40}
-            height={40}
-            className="rounded-full border border-neutral-700 shadow-sm cursor-pointer"
-          />
-          <div className="flex-1">
-            <textarea
-              rows={3}
-              className="w-full p-3 bg-neutral-900 rounded-xl text-sm focus:outline-none placeholder:text-neutral-500 resize-none"
-              placeholder="Start a new thread..."
+  return (
+    <div className="flex min-h-screen text-black bg-white">
+      <Toaster />
+
+      {/* Sidebar */}
+      <aside className="hidden sm:flex flex-col justify-between items-center w-16 py-6 fixed h-screen border-r border-neutral-200">
+        <div className="flex flex-col items-center gap-6">
+          <Image src="/threads-icon.svg" alt="Threads" width={28} height={28} />
+          {["Home", "Search", "Post", "Likes", "Profile"].map((label) => (
+            <SidebarIcon
+              key={label}
+              icon={`/icons/${label.toLowerCase()}.png`}
+              label={label}
+              active={activeTab === label}
+              onClick={() => setActiveTab(label)}
             />
-            <div className="flex justify-end mt-2">
-              <button
-                onClick={() => toast("Post functionality not implemented")}
-                className="bg-blue-500 hover:bg-blue-600 transition-colors text-white text-sm font-medium px-5 py-2 rounded-full"
+          ))}
+        </div>
+        <SidebarIcon icon="/icons/menu.png" label="Menu" />
+      </aside>
+
+      {/* Main Content */}
+      <main className="flex-1 sm:ml-16 px-4 sm:px-8 pb-20 pt-6 flex justify-center bg-white">
+        <div className="w-full max-w-2xl flex flex-col">
+          <h1 className="text-xl font-bold text-center mb-6">Home</h1>
+          <div className="space-y-5">
+            {threads.map((t, i) => (
+              <div
+                key={i}
+                className="flex items-start gap-3 p-4 rounded-xl border border-neutral-200 bg-white shadow-sm"
               >
-                Post
-              </button>
-            </div>
+                <Image
+                  src={t.user.avatar}
+                  alt={t.user.name}
+                  width={40}
+                  height={40}
+                  className="rounded-full"
+                />
+                <div className="flex-1">
+                  <div className="flex gap-2 items-center text-sm font-semibold">
+                    {t.user.name}
+                    <span className="text-neutral-500 font-normal">
+                      · {t.user.time}
+                    </span>
+                  </div>
+                  <p className="whitespace-pre-wrap text-[15px] text-neutral-800 mt-1 leading-relaxed">
+                    {t.content}
+                  </p>
+                  {t.link && (
+                    <a
+                      href={t.link}
+                      className="text-blue-600 text-sm mt-2 underline underline-offset-2 inline-block"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {t.link}
+                    </a>
+                  )}
+                  {t.image && (
+                    <div className="rounded-xl overflow-hidden mt-3 border border-neutral-200">
+                      <Image
+                        src={t.image}
+                        alt="thread-image"
+                        width={500}
+                        height={300}
+                        className="w-full h-auto object-cover"
+                      />
+                    </div>
+                  )}
+                  <div className="flex gap-6 mt-4 text-sm text-neutral-600">
+                    <span className="cursor-pointer">❤️ {t.likes}</span>
+                    <span className="cursor-pointer">💬 {t.replies}</span>
+                    <span className="cursor-pointer">🔁 {t.shares}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
 
-        {/* Thread List */}
-        {threads.map((thread, idx) => (
-          <div
-            key={idx}
-            className="flex items-start gap-3 py-5 border-t border-neutral-800"
+        {/* Suggestion Sidebar */}
+        <div className="hidden lg:block ml-8 w-80 mt-[52px] bg-neutral-100 border border-neutral-300 rounded-xl p-6 shadow-md self-start">
+          <h2 className="text-lg font-bold mb-2 text-black">
+            Log in or sign up for Threads
+          </h2>
+          <p className="text-sm text-neutral-600 mb-4 leading-relaxed">
+            See what people are talking about and join the conversation.
+          </p>
+          <button
+            onClick={() => toast("Instagram login not implemented yet")}
+            className="w-full flex items-center justify-center gap-3 bg-white border border-neutral-300 rounded-xl py-3 hover:bg-neutral-50 transition"
           >
             <Image
-              src={thread.avatar}
-              alt={`${thread.name} avatar`}
-              width={40}
-              height={40}
-              className="rounded-full border border-neutral-700 shadow-sm cursor-pointer"
+              src="/icons/instagram.png"
+              alt="Instagram"
+              width={20}
+              height={20}
             />
-            <div className="flex-1">
-              <div className="flex items-center gap-2 text-sm">
-                <span className="font-semibold">{thread.name}</span>
-                <span className="text-neutral-500">
-                  @{thread.username} · {thread.time} ago
-                </span>
-              </div>
-              <p className="whitespace-pre-wrap text-sm mt-1 leading-relaxed">
-                {thread.content}
-              </p>
+            <span className="font-semibold text-black">
+              Continue with Instagram
+            </span>
+          </button>
+          <p className="text-center text-sm text-neutral-500 mt-4">
+            Log in with username instead
+          </p>
+        </div>
+      </main>
 
-              {/* Optional Image */}
-              {thread.image && (
-                <div className="mt-3 rounded-xl overflow-hidden border border-neutral-800">
-                  <Image
-                    src={thread.image}
-                    alt="Thread media"
-                    width={500}
-                    height={300}
-                    className="w-full h-auto object-cover"
-                  />
-                </div>
-              )}
-
-              {/* Actions */}
-              <div className="flex gap-6 mt-3 text-sm text-neutral-400">
-                <button
-                  onClick={() => toast("Like clicked")}
-                  className="hover:text-white transition-colors flex items-center gap-1 cursor-pointer"
-                >
-                  ❤️ {thread.likes}
-                </button>
-                <button
-                  onClick={() => toast("Comment clicked")}
-                  className="hover:text-white transition-colors flex items-center gap-1 cursor-pointer"
-                >
-                  💬 {thread.comments}
-                </button>
-                <button
-                  onClick={() => toast("Share not implemented")}
-                  className="hover:text-white transition-colors cursor-pointer"
-                >
-                  🔁
-                </button>
-                <button
-                  onClick={() => toast("Link not implemented")}
-                  className="hover:text-white transition-colors cursor-pointer"
-                >
-                  🔗
-                </button>
-              </div>
-            </div>
-          </div>
+      {/* Mobile Nav */}
+      <div className="fixed bottom-0 w-full sm:hidden bg-white border-t border-neutral-200 flex justify-around py-2 z-10">
+        {["Home", "Search", "Post", "Likes", "Profile"].map((label) => (
+          <SidebarIcon
+            key={label}
+            icon={`/icons/${label.toLowerCase()}.png`}
+            label={label}
+            active={activeTab === label}
+            onClick={() => setActiveTab(label)}
+          />
         ))}
       </div>
-    </main>
+    </div>
   );
 }
