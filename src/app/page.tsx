@@ -19,14 +19,22 @@ const SidebarIcon = ({
   <button
     onClick={() => {
       onClick?.();
-      toast(`${label} not implemented yet`);
+      toast(`${label} is not implemented yet`);
     }}
     className={clsx(
-      "flex flex-col items-center transition-colors text-xs cursor-pointer",
-      active ? "text-black" : "text-neutral-500 hover:text-black",
+      "group flex flex-col items-center text-xs p-2 rounded-xl transition-all cursor-pointer",
+      active
+        ? "bg-neutral-200 text-black font-semibold"
+        : "text-neutral-500 hover:text-black hover:bg-neutral-100",
     )}
   >
-    <Image src={icon} alt={label} width={20} height={20} />
+    <Image
+      src={icon}
+      alt={label}
+      width={24}
+      height={24}
+      className="transition-transform duration-150 group-hover:scale-110"
+    />
     <span className="text-[10px] mt-1">{label}</span>
   </button>
 );
@@ -34,41 +42,68 @@ const SidebarIcon = ({
 const threads = [
   {
     user: {
-      name: "josuaiwanwahyudi",
-      avatar: "https://i.pravatar.cc/40?img=1",
-      time: "10h",
+      name: "elisabeth.journals",
+      avatar: "https://i.pravatar.cc/40?img=12",
+      time: "3h",
     },
-    content: `Confident atau confidence itu, dari bahasa latin con + fidere\n\nCon artinya "bersama" atau "dengan"\nFidere artinya "mempercayai", dimana fidere juga adalah akar utk kata "fidelity" yang artinya "kesetiaan"\n\nFidere mengandung nuansa setia dan percaya: faith(ful)\n\nSehingga arti keseluruhannya confidere adalah "dengan percaya"\n\nPertanyaannya: percaya sama siapa? Bukan sama diri sendiri, tapi kepada Tuhan (faithful)\n\nMaka, confident itu bukan soal percaya diri. Tapi soal percaya Tuhan yang setia 💪`,
-    likes: 30,
-    replies: 1,
-    shares: 1,
+    content: `My therapist said: “You don’t need to feel guilty for resting. You're not a machine.”\n\nThat hit hard.\n\nProductivity is not a measure of your worth.`,
+    likes: 128,
+    replies: 14,
+    shares: 9,
+    sends: 5,
   },
   {
     user: {
-      name: "js_khairen",
-      avatar: "https://i.pravatar.cc/40?img=2",
-      time: "10h",
+      name: "visualsbyadam",
+      avatar: "https://i.pravatar.cc/40?img=18",
+      time: "6h",
     },
-    content:
-      "Dunia sudah mau kiamat. Hubungan kalian dari 10 tahun lalu, masih sebatas foto bareng yang kau andai-andaikan kala malam. Hidup gini amat bro?",
-    likes: 21,
-    replies: 1,
-    shares: 1,
-  },
-  {
-    user: {
-      name: "tribunkaltim",
-      avatar: "https://i.pravatar.cc/40?img=3",
-      time: "7h",
-    },
-    content:
-      "Akhirnya Presiden Prabowo Subianto memutuskan 4 pulau yang sempat menjadi sengketa tetap milik Aceh.",
-    link: "https://kaltim.tribunnews.com/2025/keputusan-prabowo",
+    content: "Golden hour in the Dolomites never disappoints 🌄",
     image:
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Prabowo_Subianto_2023.jpg/640px-Prabowo_Subianto_2023.jpg",
-    likes: 0,
-    replies: 0,
-    shares: 0,
+      "https://images.unsplash.com/photo-1601758064225-6e9f3dd69f67?auto=format&fit=crop&w=1000&q=80",
+    likes: 221,
+    replies: 16,
+    shares: 18,
+    sends: 7,
+  },
+  {
+    user: {
+      name: "devsarcastic",
+      avatar: "https://i.pravatar.cc/40?img=31",
+      time: "1d",
+    },
+    content: `me: i need to focus more\nalso me: restructured my Notion dashboard for 3 hours straight\n\n#buildinpublic #devlife`,
+    likes: 87,
+    replies: 6,
+    shares: 4,
+    sends: 2,
+  },
+  {
+    user: {
+      name: "lebanon.travel",
+      avatar: "https://i.pravatar.cc/40?img=26",
+      time: "22h",
+    },
+    content:
+      "Explore the colors of Beirut 🇱🇧✨ A city of contrasts, chaos, and beauty.",
+    image:
+      "https://images.unsplash.com/photo-1596464716121-1c7b1a09f8e1?auto=format&fit=crop&w=1000&q=80",
+    likes: 109,
+    replies: 8,
+    shares: 6,
+    sends: 3,
+  },
+  {
+    user: {
+      name: "startuplogic",
+      avatar: "https://i.pravatar.cc/40?img=40",
+      time: "4h",
+    },
+    content: `Hot take: Most “overnight success” stories are 5 years of failing quietly and then 1 viral moment. Stay consistent.`,
+    likes: 172,
+    replies: 20,
+    shares: 10,
+    sends: 6,
   },
 ];
 
@@ -76,35 +111,43 @@ export default function ThreadsClone() {
   const [activeTab, setActiveTab] = useState("Home");
 
   return (
-    <div className="flex min-h-screen text-black bg-white">
+    <div className="flex min-h-screen bg-white text-black">
       <Toaster />
 
       {/* Sidebar */}
-      <aside className="hidden sm:flex flex-col justify-between items-center w-16 py-6 fixed h-screen border-r border-neutral-200">
+      <aside className="hidden sm:flex flex-col justify-center items-center w-16 py-6 fixed h-full border-r border-neutral-200">
         <div className="flex flex-col items-center gap-6">
-          <Image src="/threads-icon.svg" alt="Threads" width={28} height={28} />
+          <Image
+            src="/images/instagram.png"
+            alt="Threads"
+            width={28}
+            height={28}
+          />
           {["Home", "Search", "Post", "Likes", "Profile"].map((label) => (
             <SidebarIcon
               key={label}
-              icon={`/icons/${label.toLowerCase()}.png`}
+              icon={`/images/${label.toLowerCase()}.png`}
               label={label}
               active={activeTab === label}
               onClick={() => setActiveTab(label)}
             />
           ))}
         </div>
-        <SidebarIcon icon="/icons/menu.png" label="Menu" />
+        <SidebarIcon icon="/images/menu.png" label="Menu" />
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 sm:ml-16 px-4 sm:px-8 pb-20 pt-6 flex justify-center bg-white">
+
+      <main className="flex-1 sm:ml-16 px-4 sm:px-8 py-6 flex justify-center items-start bg-white">
         <div className="w-full max-w-2xl flex flex-col">
-          <h1 className="text-xl font-bold text-center mb-6">Home</h1>
+          <h1 className="text-base text-center font-semibold mb-4 px-1">
+            Home
+          </h1>
           <div className="space-y-5">
             {threads.map((t, i) => (
               <div
                 key={i}
-                className="flex items-start gap-3 p-4 rounded-xl border border-neutral-200 bg-white shadow-sm"
+                className="flex items-start gap-4 p-5 rounded-2xl border border-neutral-200 bg-white shadow-sm"
               >
                 <Image
                   src={t.user.avatar}
@@ -114,7 +157,7 @@ export default function ThreadsClone() {
                   className="rounded-full"
                 />
                 <div className="flex-1">
-                  <div className="flex gap-2 items-center text-sm font-semibold">
+                  <div className="flex items-center gap-2 text-sm font-semibold">
                     {t.user.name}
                     <span className="text-neutral-500 font-normal">
                       · {t.user.time}
@@ -123,21 +166,11 @@ export default function ThreadsClone() {
                   <p className="whitespace-pre-wrap text-[15px] text-neutral-800 mt-1 leading-relaxed">
                     {t.content}
                   </p>
-                  {t.link && (
-                    <a
-                      href={t.link}
-                      className="text-blue-600 text-sm mt-2 underline underline-offset-2 inline-block"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {t.link}
-                    </a>
-                  )}
                   {t.image && (
-                    <div className="rounded-xl overflow-hidden mt-3 border border-neutral-200">
+                    <div className="mt-3 overflow-hidden rounded-2xl border border-neutral-200">
                       <Image
                         src={t.image}
-                        alt="thread-image"
+                        alt="thread image"
                         width={500}
                         height={300}
                         className="w-full h-auto object-cover"
@@ -145,9 +178,42 @@ export default function ThreadsClone() {
                     </div>
                   )}
                   <div className="flex gap-6 mt-4 text-sm text-neutral-600">
-                    <span className="cursor-pointer">❤️ {t.likes}</span>
-                    <span className="cursor-pointer">💬 {t.replies}</span>
-                    <span className="cursor-pointer">🔁 {t.shares}</span>
+                    <span className="cursor-pointer flex items-center gap-1">
+                      <Image
+                        src="/images/heart.png"
+                        alt="Like"
+                        width={16}
+                        height={16}
+                      />
+                      {t.likes}
+                    </span>
+                    <span className="cursor-pointer flex items-center gap-1">
+                      <Image
+                        src="/images/chat.png"
+                        alt="Reply"
+                        width={16}
+                        height={16}
+                      />
+                      {t.replies}
+                    </span>
+                    <span className="cursor-pointer flex items-center gap-1">
+                      <Image
+                        src="/images/repost.png"
+                        alt="Repost"
+                        width={16}
+                        height={16}
+                      />
+                      {t.shares}
+                    </span>
+                    <span className="cursor-pointer flex items-center gap-1">
+                      <Image
+                        src="/images/send.png"
+                        alt="Send"
+                        width={16}
+                        height={16}
+                      />
+                      {t.sends}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -155,40 +221,40 @@ export default function ThreadsClone() {
           </div>
         </div>
 
-        {/* Suggestion Sidebar */}
-        <div className="hidden lg:block ml-8 w-80 mt-[52px] bg-neutral-100 border border-neutral-300 rounded-xl p-6 shadow-md self-start">
-          <h2 className="text-lg font-bold mb-2 text-black">
-            Log in or sign up for Threads
-          </h2>
-          <p className="text-sm text-neutral-600 mb-4 leading-relaxed">
-            See what people are talking about and join the conversation.
-          </p>
-          <button
-            onClick={() => toast("Instagram login not implemented yet")}
-            className="w-full flex items-center justify-center gap-3 bg-white border border-neutral-300 rounded-xl py-3 hover:bg-neutral-50 transition"
-          >
-            <Image
-              src="/icons/instagram.png"
-              alt="Instagram"
-              width={20}
-              height={20}
-            />
-            <span className="font-semibold text-black">
-              Continue with Instagram
-            </span>
-          </button>
-          <p className="text-center text-sm text-neutral-500 mt-4">
-            Log in with username instead
-          </p>
+        {/* Login Card */}
+        <div className="hidden lg:block ml-8 w-80 self-start">
+          <div className="rounded-2xl border border-neutral-300 bg-neutral-100 p-6 shadow-md">
+            <h2 className="text-lg font-bold mb-2">
+              Log in or sign up for Threads
+            </h2>
+            <p className="text-sm text-neutral-600 mb-4">
+              See what people are talking about and join the conversation.
+            </p>
+            <button
+              onClick={() => toast("Instagram login not implemented")}
+              className="w-full flex items-center gap-3 justify-center border border-neutral-300 bg-white rounded-xl py-3 hover:bg-neutral-50 transition cursor-pointer"
+            >
+              <Image
+                src="/images/instagram.png"
+                alt="Instagram"
+                width={20}
+                height={20}
+              />
+              <span className="font-semibold">Continue with Instagram</span>
+            </button>
+            <p className="text-center text-sm text-neutral-500 mt-4 cursor-pointer">
+              Log in with username instead
+            </p>
+          </div>
         </div>
       </main>
 
-      {/* Mobile Nav */}
+      {/* Mobile Bottom Nav */}
       <div className="fixed bottom-0 w-full sm:hidden bg-white border-t border-neutral-200 flex justify-around py-2 z-10">
         {["Home", "Search", "Post", "Likes", "Profile"].map((label) => (
           <SidebarIcon
             key={label}
-            icon={`/icons/${label.toLowerCase()}.png`}
+            icon={`/images/${label.toLowerCase()}.png`}
             label={label}
             active={activeTab === label}
             onClick={() => setActiveTab(label)}
