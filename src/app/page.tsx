@@ -19,7 +19,7 @@ const SidebarIcon = ({
   <button
     onClick={() => {
       onClick?.();
-      toast(`${label} is not implemented yet`);
+      toast(`${label} is not implemented yet!!!`);
     }}
     className={clsx(
       "group flex flex-col items-center text-xs p-2 rounded-xl transition-all cursor-pointer",
@@ -141,7 +141,7 @@ export default function ThreadsClone() {
       <main className="flex-1 sm:ml-16 px-4 sm:px-8 py-6 flex justify-center items-start bg-white">
         <div className="w-full max-w-2xl flex flex-col">
           <h1 className="text-base text-center font-semibold mb-4 px-1">
-            Home
+            Home Section
           </h1>
           <div className="space-y-5">
             {threads.map((t, i) => (
@@ -228,7 +228,7 @@ export default function ThreadsClone() {
               Log in or sign up for Threads
             </h2>
             <p className="text-sm text-neutral-600 mb-4">
-              See what people are talking about and join the conversation.
+              SEE WHAT PEOPLE ARE TALKING ABOUT AND JOIN THE CONVERSATION.
             </p>
             <button
               onClick={() => toast("Instagram login not implemented")}
@@ -251,7 +251,7 @@ export default function ThreadsClone() {
 
       {/* Mobile Bottom Nav */}
       <div className="fixed bottom-0 w-full sm:hidden bg-white border-t border-neutral-200 flex justify-around py-2 z-10">
-        {["Home", "Search", "Post", "Likes", "Profile"].map((label) => (
+        {["Home Page", "Search", "Post", "Likes", "Profile"].map((label) => (
           <SidebarIcon
             key={label}
             icon={`/images/${label.toLowerCase()}.png`}
